@@ -215,4 +215,24 @@ public class ExampleVisualNovel : MonoBehaviour
         if (Input.GetButtonDown("Next")) DisplayNextLine();
     }
     **/
+    /**
+public string GetDialog(string name)
+{
+    return string.Join("\n", GetDialogList(name));
+}
+
+public List<string> GetDialogList(string name)
+{
+    List<string> result = new List<string>();
+    if (name != null)
+    {
+        Container intro = dialogs.KnotContainerWithName(name);
+        foreach (Ink.Runtime.Object line in intro.content)
+            if (line.ToString() != "End" && line.ToString() != "\n") result.Add(line.ToString());
+    } else
+    {
+        result.Add("error");
+    }
+    return result;
+}**/
 }
