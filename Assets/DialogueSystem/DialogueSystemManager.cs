@@ -83,7 +83,7 @@ public class DialogueSystemManager : MonoBehaviour
     public void GoToStartOfKnot(string knotName)
     {
         Container containerToGo = story.KnotContainerWithName(knotName);
-        //TODO check if this works
         story.ChoosePath(containerToGo.path);
+        NextLine();
     }
 }
