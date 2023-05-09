@@ -1,37 +1,60 @@
+using Ink.UnityIntegration;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DialogueCanvas : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public static DialogueCanvas Instance { get; private set; }
+
+    private DialogueInkManager dialogueInk;
+    private DialogueSystemDisplay textDisplay;
+    private DialogueSystemDisplay optionsDisplay;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else Destroy(this);
+    }
     void Start()
     {
-        DialogueSystemManager ds = DialogueSystemManager.Instance;
-        ds.OnChosenChoice += Ds_OnChosenChoice;
-        ds.OnContinueStory += Ds_OnContinueStory;
-        ds.OnStoryChoices += Ds_OnStoryChoices;
-        ds.OnStoryEnd += Ds_OnStoryEnd;
+        dialogueInk = DialogueInkManager.Instance;
+        dialogueInk.OnChosenChoice += Ds_OnChosenChoice;
+        dialogueInk.OnContinueStory += Ds_OnContinueStory;
+        dialogueInk.OnStoryChoices += Ds_OnStoryChoices;
+        dialogueInk.OnStoryEnd += Ds_OnStoryEnd;
     }
-
+    public void StartDialogue(string knotName, DialogueSystemDisplay textDisplay, DialogueSystemDisplay optionsDisplay = null)
+    {
+        this.textDisplay = Instantiate(textDisplay,transform);
+        this.optionsDisplay = Instantiate(optionsDisplay,transform);
+        DialogueInkManager.Instance.GoToStartOfKnot(knotName);
+    }
     private void Ds_OnStoryEnd(object sender, System.EventArgs e)
     {
-        Debug.Log("End");
+        Destroy(textDisplay.gameObject);
+        Destroy(optionsDisplay.gameObject);
     }
 
-    private void Ds_OnStoryChoices(object sender, DialogueSystemManager.OnStoryChoicesArgs e)
+    private void Ds_OnStoryChoices(object sender, DialogueInkManager.OnStoryChoicesArgs e)
     {
-        Debug.Log(e.choices[0].text);
-        Debug.Log(e.choices[1].text);
+        textDisplay.gameObject.SetActive(false);
+        optionsDisplay.gameObject.SetActive(true);
+
+        optionsDisplay.setText(dialogueInk.GetCurrentText());
+        optionsDisplay.CreateOptions(e.choices);
     }
 
     private void Ds_OnContinueStory(object sender, System.EventArgs e)
     {
-        Debug.Log("NextLine");
+        textDisplay.setText(dialogueInk.GetCurrentText());
     }
 
     private void Ds_OnChosenChoice(object sender, System.EventArgs e)
     {
-        Debug.Log("Chosen");
+        optionsDisplay.gameObject.SetActive(false);
     }
 }

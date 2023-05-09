@@ -4,9 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueSystemManager : MonoBehaviour
+public class DialogueInkManager : MonoBehaviour
 {
-    public static DialogueSystemManager Instance { get; private set; }
+    public static DialogueInkManager Instance { get; private set; }
 
     public event EventHandler OnContinueStory;
 
@@ -59,17 +59,19 @@ public class DialogueSystemManager : MonoBehaviour
                 OnContinueStory?.Invoke(this, EventArgs.Empty);
             }
         }
-        else
+        else if (story.currentChoices.Count == 0)
         {
             OnStoryEnd?.Invoke(this,EventArgs.Empty);
         }
     }
-    public void ChooseOption(Choice choice)
+    public void ChooseOption(Choice choice , Action choiceFunction = null)
     {
         if (story.currentChoices.Count > 0)
         {
             story.ChooseChoiceIndex(choice.index);
+            choiceFunction?.Invoke();
             OnChosenChoice?.Invoke(this, EventArgs.Empty);
+            NextLine();
         }
     }
     public bool CanContinue()
