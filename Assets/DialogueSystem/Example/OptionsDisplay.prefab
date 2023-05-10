@@ -439,7 +439,8 @@ MonoBehaviour:
   dialogueText: {fileID: 5179083620857455272}
   dialogueImage: {fileID: 8778131581938512528}
   optionParent: {fileID: 3670330273283416523}
-  optionPrefab: {fileID: 2376646502255708865, guid: 188192aada43dd443b8b7adeb1422b11, type: 3}
+  optionButtonPrefab: {fileID: 2951954699482330622, guid: 188192aada43dd443b8b7adeb1422b11, type: 3}
+  continueButton: {fileID: 0}
 --- !u!1 &1323688651480608309
 GameObject:
   m_ObjectHideFlags: 0

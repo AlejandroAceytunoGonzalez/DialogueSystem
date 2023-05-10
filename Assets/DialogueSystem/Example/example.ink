@@ -9,11 +9,11 @@ Me: Well, that's what I wanted to ask. You know.. after yesterday?
 Alice: Oh... 
 Alice: Yeah I'm feeling better, I was just stressed and my stomach hurt.
 Me: I needed an angle to approach her. #thought
-*** Is something bothering you?
+*** [Is something bothering you?]
 -> is_something_bothering_you
-*** I'm worried about your eating
+*** [I'm worried about your eating]
 -> ask_about_food
-*** You threw up yesterday... didn't you?
+*** [You threw up yesterday... didn't you?]
 -> ask_about_throwing_up
 
 === is_something_bothering_you ===
@@ -38,11 +38,11 @@ Me: I feel like she's hiding something. #thought
 Me: But it seems like she's not comfortable talking about it #thought
 Me: Maybe I should just let it go? #thought
 Me: Or maybe I need a different angle? #thought
-***I'm here for you
+***[I'm here for you]
 -> Here_for_you_ignorant
-***I'm worried about your eating
+***[I'm worried about your eating]
 -> ask_about_food
-***You threw up yesterday... didn't you?
+***[You threw up yesterday... didn't you?]
 -> ask_about_throwing_up
 
 === ask_about_food ===
@@ -85,8 +85,8 @@ Alice: Maybe it was something I'd eaten earlier.
 Me: Hmm... #thought
 Me: I don't think this is her true reason. #thought
 Me: But at least she's not denying it, I guess. #thought
-*** Next time you feel bad, talk to me. -> throwing_up_support
-*** Throwing up is not the answer. -> throwing_up_dismiss
+*** [Next time you feel bad, talk to me.] -> throwing_up_support
+*** [Throwing up is not the answer.] -> throwing_up_dismiss
 
 === throwing_up_support ===
 Me: I know it was a lot for her to tell me that when she was trying to deny it so hard. #thought
@@ -134,9 +134,9 @@ Me: Wow that was quick. #thought
 Alice: I mean... Yeah I did.
 Alice: I had some cereal in the morning.
 Alice: Why?
-*** You don't have to hide things from me -> food_talk_gentle
-*** Why are you lying? -> food_talk_pressure
-*** No reason... -> food_talk_let_go
+*** [You don't have to hide things from me] -> food_talk_gentle
+*** [Why are you lying?] -> food_talk_pressure
+*** [No reason...] -> food_talk_let_go
 
 === food_talk_gentle === 
 Me: I know she's stressed out already, but I need to know the truth. #thought

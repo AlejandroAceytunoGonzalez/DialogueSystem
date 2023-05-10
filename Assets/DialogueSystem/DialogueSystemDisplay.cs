@@ -12,9 +12,13 @@ public class DialogueSystemDisplay : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private Image dialogueImage;
     [SerializeField] private Transform optionParent;
-    [SerializeField] private Button optionPrefab;
+    [SerializeField] private OptionButton optionButtonPrefab;
+    [SerializeField] private Button continueButton;
     private void Awake()
     {
+        if (continueButton != null) continueButton.onClick.AddListener(() => {
+            DialogueInkManager.Instance.NextLine();
+        });
         gameObject.SetActive(false);
     }
     public void setImage(Sprite image)
@@ -31,9 +35,23 @@ public class DialogueSystemDisplay : MonoBehaviour
     }
     public void CreateOptions(List<Choice> choices)
     {
+        int index = 0;
         foreach (Choice choice in choices)
         {
-            Button button = Instantiate(optionPrefab, optionParent);
+            index++;
+            OptionButton optionButton = Instantiate(optionButtonPrefab, optionParent);
+            optionButton.setText(choice.text,index.ToString());
+            Button button = optionButton.gameObject.GetComponent<Button>();
+            button.onClick.AddListener(() => {
+                DialogueInkManager.Instance.ChooseOption(choice);
+            });
+        }
+    }
+    public void DestroyOptions()
+    {
+        foreach(Transform child in optionParent)
+        {
+            Destroy(child.gameObject);
         }
     }
 }

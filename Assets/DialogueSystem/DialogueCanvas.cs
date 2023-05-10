@@ -10,6 +10,7 @@ public class DialogueCanvas : MonoBehaviour
     private DialogueInkManager dialogueInk;
     private DialogueSystemDisplay textDisplay;
     private DialogueSystemDisplay optionsDisplay;
+    private bool isActive = false;
 
     private void Awake()
     {
@@ -29,14 +30,16 @@ public class DialogueCanvas : MonoBehaviour
     }
     public void StartDialogue(string knotName, DialogueSystemDisplay textDisplay, DialogueSystemDisplay optionsDisplay = null)
     {
+        ResetDialogue();
+        isActive = true;
         this.textDisplay = Instantiate(textDisplay,transform);
         this.optionsDisplay = Instantiate(optionsDisplay,transform);
         DialogueInkManager.Instance.GoToStartOfKnot(knotName);
     }
     private void Ds_OnStoryEnd(object sender, System.EventArgs e)
     {
-        Destroy(textDisplay.gameObject);
-        Destroy(optionsDisplay.gameObject);
+        ResetDialogue();
+        isActive = false;
     }
 
     private void Ds_OnStoryChoices(object sender, DialogueInkManager.OnStoryChoicesArgs e)
@@ -50,11 +53,18 @@ public class DialogueCanvas : MonoBehaviour
 
     private void Ds_OnContinueStory(object sender, System.EventArgs e)
     {
+        textDisplay.gameObject.SetActive(true);
         textDisplay.setText(dialogueInk.GetCurrentText());
     }
 
     private void Ds_OnChosenChoice(object sender, System.EventArgs e)
     {
         optionsDisplay.gameObject.SetActive(false);
+        optionsDisplay.DestroyOptions();
+    }
+    private void ResetDialogue()
+    {
+        if (textDisplay != null) Destroy(textDisplay.gameObject);
+        if (optionsDisplay != null) Destroy(optionsDisplay.gameObject);
     }
 }
