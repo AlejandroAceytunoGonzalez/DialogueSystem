@@ -33,7 +33,7 @@ public class DialogueSystemDisplay : MonoBehaviour
     {
         dialogueText.text = dialogue;
     }
-    public void CreateOptions(List<Choice> choices)
+    public void CreateOptions(List<Choice> choices,List<ChoiceEvent> choiceEvents = null)
     {
         int index = 0;
         foreach (Choice choice in choices)
@@ -42,9 +42,33 @@ public class DialogueSystemDisplay : MonoBehaviour
             OptionButton optionButton = Instantiate(optionButtonPrefab, optionParent);
             optionButton.setText(choice.text,index.ToString());
             Button button = optionButton.gameObject.GetComponent<Button>();
-            button.onClick.AddListener(() => {
-                DialogueInkManager.Instance.ChooseOption(choice);
-            });
+            if(choiceEvents != null)
+            {
+                bool foundChoice = false; 
+                foreach (ChoiceEvent choiceEvent in choiceEvents)
+                {
+                    if (choice.text == choiceEvent.choiceText)
+                    {
+                        foundChoice = true;
+                        button.onClick.AddListener(() => {
+                            DialogueInkManager.Instance.ChooseOption(choice, choiceEvent.choiceEvent);
+                        });
+                    }
+                }
+                if (!foundChoice)
+                {
+                    button.onClick.AddListener(() => {
+                        DialogueInkManager.Instance.ChooseOption(choice);
+                    });
+                }
+
+            }
+            else
+            {
+                button.onClick.AddListener(() => {
+                    DialogueInkManager.Instance.ChooseOption(choice);
+                });
+            }
         }
     }
     public void DestroyOptions()

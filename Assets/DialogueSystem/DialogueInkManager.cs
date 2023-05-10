@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DialogueInkManager : MonoBehaviour
 {
@@ -13,7 +14,6 @@ public class DialogueInkManager : MonoBehaviour
     public event EventHandler<OnStoryChoicesArgs> OnStoryChoices;
     public class OnStoryChoicesArgs: EventArgs
     {
-        public string choiceText;
         public List<Choice> choices;
     }
 
@@ -50,7 +50,6 @@ public class DialogueInkManager : MonoBehaviour
                 }
                 OnStoryChoices?.Invoke(this, new OnStoryChoicesArgs
                 {
-                    choiceText = text,
                     choices = choices
                 });;
             }
@@ -64,7 +63,7 @@ public class DialogueInkManager : MonoBehaviour
             OnStoryEnd?.Invoke(this,EventArgs.Empty);
         }
     }
-    public void ChooseOption(Choice choice , Action choiceFunction = null)
+    public void ChooseOption(Choice choice , UnityEvent choiceFunction = null)
     {
         if (story.currentChoices.Count > 0)
         {
@@ -81,6 +80,10 @@ public class DialogueInkManager : MonoBehaviour
     public string GetCurrentText()
     {
         return story.currentText.Trim();
+    }
+    public List<string> GetCurrentTags()
+    {
+        return story.currentTags;
     }
     public void GoToStartOfKnot(string knotName)
     {

@@ -418,6 +418,23 @@ MonoBehaviour:
   textDisplay: {fileID: 4314897650414003948, guid: 9abfc27216f7ad54eae5d816304eec99, type: 3}
   optionsDisplay: {fileID: 1108059043822317018, guid: 911c2a7a283f6cc489229de708a8b7b0, type: 3}
   knotName: start
+  choiceEvents:
+  - choiceEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 706637076}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    choiceText: I'm worried about your eating
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,9 @@ public class DialogueCanvas : MonoBehaviour
     private DialogueSystemDisplay textDisplay;
     private DialogueSystemDisplay optionsDisplay;
     private bool isActive = false;
+    private List<ChoiceEvent> choiceEvents;
+
+    /* First Tag Should Be Title of Display */
 
     private void Awake()
     {
@@ -28,10 +31,11 @@ public class DialogueCanvas : MonoBehaviour
         dialogueInk.OnStoryChoices += Ds_OnStoryChoices;
         dialogueInk.OnStoryEnd += Ds_OnStoryEnd;
     }
-    public void StartDialogue(string knotName, DialogueSystemDisplay textDisplay, DialogueSystemDisplay optionsDisplay = null)
+    public void StartDialogue(string knotName, DialogueSystemDisplay textDisplay, DialogueSystemDisplay optionsDisplay = null, List<ChoiceEvent> choiceEvents = null)
     {
         ResetDialogue();
         isActive = true;
+        if (choiceEvents != null) this.choiceEvents = choiceEvents;
         this.textDisplay = Instantiate(textDisplay,transform);
         this.optionsDisplay = Instantiate(optionsDisplay,transform);
         DialogueInkManager.Instance.GoToStartOfKnot(knotName);
@@ -39,7 +43,6 @@ public class DialogueCanvas : MonoBehaviour
     private void Ds_OnStoryEnd(object sender, System.EventArgs e)
     {
         ResetDialogue();
-        isActive = false;
     }
 
     private void Ds_OnStoryChoices(object sender, DialogueInkManager.OnStoryChoicesArgs e)
@@ -48,13 +51,14 @@ public class DialogueCanvas : MonoBehaviour
         optionsDisplay.gameObject.SetActive(true);
 
         optionsDisplay.setText(dialogueInk.GetCurrentText());
-        optionsDisplay.CreateOptions(e.choices);
+        optionsDisplay.CreateOptions(e.choices, choiceEvents);
     }
 
     private void Ds_OnContinueStory(object sender, System.EventArgs e)
     {
         textDisplay.gameObject.SetActive(true);
         textDisplay.setText(dialogueInk.GetCurrentText());
+        if (dialogueInk.GetCurrentTags().Count > 0) textDisplay.setTitle(dialogueInk.GetCurrentTags()[0]);
     }
 
     private void Ds_OnChosenChoice(object sender, System.EventArgs e)
@@ -64,7 +68,9 @@ public class DialogueCanvas : MonoBehaviour
     }
     private void ResetDialogue()
     {
+        isActive = false;
         if (textDisplay != null) Destroy(textDisplay.gameObject);
         if (optionsDisplay != null) Destroy(optionsDisplay.gameObject);
+        choiceEvents = new List<ChoiceEvent>();
     }
 }
