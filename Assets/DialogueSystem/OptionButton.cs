@@ -11,6 +11,6 @@ public class OptionButton : MonoBehaviour
     public void setText(string text, string optionIndex = null)
     {
         optionText.text = text;
-        if (optionIndex != null) optionIndexText.text = optionIndex;
+        if (optionIndex != null && optionIndexText != null) optionIndexText.text = optionIndex;
     }
 }
